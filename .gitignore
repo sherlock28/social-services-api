@@ -1,1 +1,7 @@
 node_modules/
+.env
+
+pgadmin/.pgpass
+pgadmin/pgadmin.env
+
+postgresql/postgres.env

@@ -1,0 +1,14 @@
+{
+    "Servers": {
+      "1": {
+        "Name": "social",
+        "Group": "Dev",
+        "Host": "database",
+        "Port": 5432,
+        "MaintenanceDB": "postgres",
+        "Username": "postgres",
+        "PassFile": "/.pgpass",
+        "SSLMode": "prefer"
+      }
+    }
+ }
