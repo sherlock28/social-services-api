@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  username   String   @unique
+  password   String
+  created_at DateTime @default(now())
+}
+
+model Member {
+  id              Int          @id @default(autoincrement())
+  number          Int
+  name            String
+  status          Boolean      @default(false)
+  phone_one       Int
+  phone_two       Int
+  address         String
+  district        String
+  payday          Int
+  last_pay_amount Float
+  plan            Plan         @relation(fields: [plan_id], references: [id])
+  plan_id         Int
+  payments        Payment[]
+  Subscriber      Subscriber[]
+  created_at      DateTime     @default(now())
+}
+
+model Plan {
+  id          Int      @id @default(autoincrement())
+  description String
+  Members     Member[]
+  created_at  DateTime @default(now())
+}
+
+model Subscriber {
+  id         Int      @id @default(autoincrement())
+  name       String
+  member     Member   @relation(fields: [member_id], references: [id])
+  member_id  Int
+  created_at DateTime @default(now())
+}
+
+model Payment {
+  id         Int      @id @default(autoincrement())
+  number     Int
+  year       Int
+  amount     Float
+  datetime   DateTime @default(now())
+  member     Member   @relation(fields: [member_id], references: [id])
+  member_id  Int
+  month      Month    @relation(fields: [month_id], references: [id])
+  month_id   Int
+  created_at DateTime @default(now())
+}
+
+model Month {
+  id      Int       @id @default(autoincrement())
+  month   String
+  Payment Payment[]
+}
