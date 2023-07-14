@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Social Services API",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/",
     "dev": "nodemon src/"
@@ -21,12 +22,16 @@
   "bugs": {
     "url": "https://github.com/sherlock28/social-services-api/issues"
   },
+  "prisma": {
+    "seed": "node ./prisma/seed.js"
+  },
   "homepage": "https://github.com/sherlock28/social-services-api#readme",
   "devDependencies": {
     "nodemon": "2.0.22",
     "prisma": "^4.16.2"
   },
   "dependencies": {
+    "@prisma/client": "^4.16.2",
     "express": "4.18.2"
   }
 }
