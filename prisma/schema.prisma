@@ -24,8 +24,8 @@ model Member {
   number          Int
   name            String
   status          Boolean      @default(false)
-  phone_one       Int
-  phone_two       Int
+  phone_one       String
+  phone_two       String?
   address         String
   district        String
   payday          Int
