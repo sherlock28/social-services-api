@@ -1,5 +1,5 @@
-import memberRoutes from './member.route.js';
+import memberRoutes from './v1/member.route.js';
 
-export const routes = {
+export const v1Routes = {
     memberRoutes,
 }

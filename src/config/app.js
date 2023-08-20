@@ -1,16 +1,16 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 import morgan from 'morgan';
 import express from 'express';
 import cors from 'cors';
 import ip from 'ip';
-import { routes } from '../routes/index.js';
+import { v1Routes } from '../routes/index.js';
 import { HttpStatusCode } from '../const/statusCodes.js';
-import { env } from "./env.js";
+import { env } from './env.js';
 
 const getApiVersion = () => {
     const version = env.VERSION ?? 1;
-    return `V${version}`;
+    return `v${version}`;
 }
 
 const configureApp = (app) => {
@@ -33,7 +33,7 @@ const configureApp = (app) => {
         });
     });
 
-    app.use(`/api/${getApiVersion()}/member`, routes.memberRoutes);
+    app.use(`/api/${getApiVersion()}/member`, v1Routes.memberRoutes);
 
     return app;
 }
