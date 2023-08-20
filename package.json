@@ -28,7 +28,9 @@
   "homepage": "https://github.com/sherlock28/social-services-api#readme",
   "devDependencies": {
     "nodemon": "2.0.22",
-    "prisma": "^4.16.2"
+    "prisma": "^4.16.2",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "5.0.0"
   },
   "dependencies": {
     "@prisma/client": "^4.16.2",
