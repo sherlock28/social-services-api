@@ -19,7 +19,14 @@ async function main() {
         ]
     })
 
-    console.log({ months })
+    const plans = await prisma.Plan.createMany({
+        data: [
+            { description: 'Plan 1' },
+            { description: 'Plan 2' },
+        ]
+    })
+
+    console.log({ months, plans })
 }
 
 main()
