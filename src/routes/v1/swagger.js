@@ -9,9 +9,9 @@ const options = {
         openapi: "3.0.0",
         info: { title: "Social Service API", version: "1.0.0" },
     },
-    apis: [path.join(process.cwd(), '/src/routes/v1/*.route.js')], 
+    apis: [path.join(process.cwd(), '/docs/v1/*.routes.yml')], 
 };
-console.log(path.join(process.cwd(), '/src/routes/v1/*.route.js'));
+
 // Docs in JSON format
 const swaggerSpec = swaggerJSDoc(options);
 
