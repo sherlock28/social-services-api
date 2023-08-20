@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import morgan from 'morgan';
 import express from 'express';
 import cors from 'cors';
@@ -17,8 +15,15 @@ const configureApp = (app) => {
 
     // settings
     app.set('port', env.PORT || 5000);
+
+    console.log({env: env})
     if (env.NODE_ENV === "development")
+    {
         env.APP_DOMAIN = ip.address() + ":" + env.PORT;
+
+        console.log("DOMAIN " + env.APP_DOMAIN)
+    }
+        
 
     // middlewares
     app.use(morgan("short"));
