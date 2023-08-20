@@ -43,6 +43,7 @@ const validateCreate = [
         .exists().withMessage("plan_id is required")
         .notEmpty().withMessage("plan_id cannot be empty")
         .isNumeric().withMessage("plan_id must be numeric"),
+
     (req, res, next) => validateResult(req, res, next)
 ];
 
