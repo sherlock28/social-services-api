@@ -21,7 +21,7 @@ model User {
 
 model Member {
   id              Int          @id @default(autoincrement())
-  number          Int
+  number          Int          @unique
   name            String
   status          Boolean      @default(false)
   phone_one       String
