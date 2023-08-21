@@ -47,9 +47,22 @@ class MemberController {
 		return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Member deleted successfully", error: null }));
 	}
 
-	getByNumber(req, res) {
+	async getByNumber(req, res) {
 
-		return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Successfully obtained member", error: null }));
+		const { number } = req.params;
+
+		try {
+			const user = await prisma.Member.findFirst({ where: { number: +number } });
+
+			if (!user)
+				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "Member not found", error: null }));
+
+			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: user, success: true, message: "Successfully obtained member", error: null }));
+
+		} catch (err) {
+			logger.error("Couldn't get member", err);
+			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: true, message: "Couldn't get member", error: err }));
+		}
 	}
 
 	get(req, res) {
