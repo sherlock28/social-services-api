@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import ip from 'ip';
 import { v1Routes } from '../routes/index.js';
+import { swaggerDocs as V1SwaggerDocs } from '../routes/v1/swagger.js';
 import { pathNotFound } from '../middlewares/pathNotFound.js';
 import { HttpStatusCode } from '../const/statusCodes.js';
 import { env } from './env.js';
@@ -20,7 +21,6 @@ const configureApp = (app) => {
     if (env.NODE_ENV === "development")
         env.APP_DOMAIN = ip.address() + ":" + env.PORT;
 
-
     // middlewares
     app.use(morgan("short"));
     app.use(cors());
@@ -35,6 +35,10 @@ const configureApp = (app) => {
     });
 
     app.use(`/api/${getApiVersion()}/member`, v1Routes.memberRoutes);
+    
+    if (env.NODE_ENV === "development")
+        V1SwaggerDocs(app, app.get('port'));
+
     app.use(pathNotFound);
 
     return app;
