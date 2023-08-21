@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import ip from 'ip';
 import { v1Routes } from '../routes/index.js';
+import { pathNotFound } from '../middlewares/pathNotFound.js';
 import { HttpStatusCode } from '../const/statusCodes.js';
 import { env } from './env.js';
 
@@ -34,6 +35,7 @@ const configureApp = (app) => {
     });
 
     app.use(`/api/${getApiVersion()}/member`, v1Routes.memberRoutes);
+    app.use(pathNotFound);
 
     return app;
 }
