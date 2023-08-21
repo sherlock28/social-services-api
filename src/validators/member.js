@@ -1,4 +1,4 @@
-import { check } from "express-validator";
+import { check, param } from "express-validator";
 import { validateResult } from "../helpers/validateHelper.js";
 
 const validateCreate = [
@@ -55,4 +55,13 @@ const custom_last_pay_amount_validation = (value, req) => {
     return true;
 };
 
-export { validateCreate };
+const validateNumber = [
+    param('number')
+        .exists().withMessage("number is required")
+        .notEmpty().withMessage("number cannot be empty")
+        .isNumeric().withMessage("number must be numeric"),
+
+    (req, res, next) => validateResult(req, res, next)
+];
+
+export { validateCreate, validateNumber };
