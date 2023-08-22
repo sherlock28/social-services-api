@@ -42,9 +42,18 @@ class MemberController {
 		return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Member updated successfully", error: null }));
 	}
 
-	delete(req, res) {
+	async delete(req, res) {
 
-		return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Member deleted successfully", error: null }));
+		const { number } = req.params;
+
+		try {
+			const deletedUser = await prisma.Member.delete({ where: { number: +number } });
+
+			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: deletedUser, success: true, message: "Member deleted successfully", error: null }));
+		} catch (err) {
+			logger.error("Couldn't delete member", err);
+			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't delete member", error: err }));
+		}
 	}
 
 	async getByNumber(req, res) {

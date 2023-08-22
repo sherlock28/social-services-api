@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/', validateCreate, memberCtrl.create);
 router.put('/:number', memberCtrl.update);
-router.delete('/:number', memberCtrl.delete);
+router.delete('/:number', validateNumber, memberCtrl.delete);
 router.get('/:number', validateNumber, memberCtrl.getByNumber);
 router.get('/', memberCtrl.get);
 
