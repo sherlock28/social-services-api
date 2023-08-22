@@ -9,7 +9,7 @@ class MemberController {
 
 	async create(req, res) {
 
-		const { number, name, phone_one, phone_two, address, district, payday, last_pay_amount, plan_id, payments } = req.body;
+		const { number, name, phone_one, phone_two, address, district, payday, last_pay_amount, plan_id } = req.body;
 
 		try {
 			const newMember = await prisma.Member.create({
@@ -22,7 +22,6 @@ class MemberController {
 					district,
 					payday,
 					last_pay_amount,
-					payments,
 					plan: {
 						connect: { id: plan_id }
 					}
@@ -37,9 +36,38 @@ class MemberController {
 		}
 	}
 
-	update(req, res) {
+	async update(req, res) {
 
-		return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Member updated successfully", error: null }));
+		const { number } = req.params;
+		const { name, phone_one, phone_two, address, district, payday, last_pay_amount, plan_id } = req.body;
+
+		try {
+			const member = await prisma.Member.findFirst({ where: { number: +number } });
+
+			if (!member)
+				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "Member not found", error: null }));
+
+			const memberUpdated = await prisma.Member.update({
+				where: { number: +number },
+				data: {
+					name,
+					phone_one,
+					phone_two: phone_two ?? null,
+					address,
+					district,
+					payday,
+					last_pay_amount,
+					plan: {
+						connect: { id: plan_id }
+					}
+				}
+			});
+
+			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: memberUpdated, success: true, message: "Member updated successfully", error: null }));
+		} catch (err) {
+			logger.error("Couldn't update member", err);
+			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't update member", error: err }));
+		}
 	}
 
 	async delete(req, res) {
@@ -61,9 +89,9 @@ class MemberController {
 		const { number } = req.params;
 
 		try {
-			const user = await prisma.Member.findFirst({ where: { number: +number } });
+			const member = await prisma.Member.findFirst({ where: { number: +number } });
 
-			if (!user)
+			if (!member)
 				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "Member not found", error: null }));
 
 			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: user, success: true, message: "Successfully obtained member", error: null }));
