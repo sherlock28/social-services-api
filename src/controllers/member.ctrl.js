@@ -33,7 +33,7 @@ class MemberController {
 
 		} catch (err) {
 			logger.error("Couldn't save member", err);
-			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: true, message: "Couldn't save member", error: err }));
+			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't save member", error: err }));
 		}
 	}
 
@@ -61,13 +61,28 @@ class MemberController {
 
 		} catch (err) {
 			logger.error("Couldn't get member", err);
-			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: true, message: "Couldn't get member", error: err }));
+			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't get member", error: err }));
 		}
 	}
 
-	get(req, res) {
+	async get(req, res) {
 
-		return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Successfully obtained members", error: null }));
+		const offset = req.query.offset ?? 0;
+		const limit = req.query.limit ?? 20;
+
+		try {
+			const members = await prisma.Member.findMany({
+				where: { status: true },
+				orderBy: { number: "asc" },
+				skip: +offset,
+				take: +limit
+			});
+
+			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: members, success: true, message: "Successfully obtained members", error: null }));
+		} catch (err) {
+			logger.error("Couldn't get members", err);
+			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't get members", error: err }));
+		}
 	}
 }
 
