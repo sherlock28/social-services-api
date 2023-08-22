@@ -23,7 +23,7 @@ model Member {
   id              Int          @id @default(autoincrement())
   number          Int          @unique
   name            String
-  status          Boolean      @default(false)
+  status          Boolean      @default(true)
   phone_one       String
   phone_two       String?
   address         String

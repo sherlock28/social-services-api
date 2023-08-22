@@ -15,7 +15,7 @@ CREATE TABLE "Member" (
     "id" SERIAL NOT NULL,
     "number" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
-    "status" BOOLEAN NOT NULL DEFAULT false,
+    "status" BOOLEAN NOT NULL DEFAULT true,
     "phone_one" TEXT NOT NULL,
     "phone_two" TEXT,
     "address" TEXT NOT NULL,
