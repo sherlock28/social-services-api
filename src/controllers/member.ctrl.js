@@ -94,7 +94,7 @@ class MemberController {
 			if (!member)
 				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "Member not found", error: null }));
 
-			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: user, success: true, message: "Successfully obtained member", error: null }));
+			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: member, success: true, message: "Successfully obtained member", error: null }));
 
 		} catch (err) {
 			logger.error("Couldn't get member", err);

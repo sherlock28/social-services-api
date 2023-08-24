@@ -34,7 +34,7 @@ const configureApp = (app) => {
         });
     });
 
-    app.use(`/api/${getApiVersion()}/member`, v1Routes.memberRoutes);
+    app.use(`/api/${getApiVersion()}/members`, v1Routes.memberRoutes);
     app.use(`/api/${getApiVersion()}/users`, v1Routes.userRoutes);
     
     if (env.NODE_ENV === "development")

@@ -1,4 +1,4 @@
-/api/v1/member/{number}:
+/api/v1/members/{number}:
   get:
     summary: Get a member by number
     parameters:
@@ -208,7 +208,7 @@
                   type: object
                   default: null
 
-/api/v1/member:
+/api/v1/members:
   post:
     summary: Create a member
     tags:
