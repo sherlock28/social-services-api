@@ -89,6 +89,7 @@ class UserController {
         try {
             const user = await prisma.User.findFirst({
                 select: {
+                    id: true,
                     name: true,
                     email: true,
                     username: true,
@@ -115,6 +116,7 @@ class UserController {
         try {
             const users = await prisma.User.findMany({
                 select: {
+                    id: true,
                     name: true,
                     email: true,
                     username: true,
