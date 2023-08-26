@@ -75,9 +75,14 @@ class MemberController {
 		const { number } = req.params;
 
 		try {
-			const deletedUser = await prisma.Member.delete({ where: { number: +number } });
+			const member = await prisma.Member.findFirst({ where: { number: +number } });
 
-			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: { number: deletedUser.number }, success: true, message: "Member deleted successfully", error: null }));
+			if (!member)
+				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "Member not found", error: null }));
+			
+			const deletedMember = await prisma.Member.delete({ where: { number: +number } });
+
+			return res.status(HttpStatusCode.OK).json(serviceResponse({ data: { number: deletedMember.number }, success: true, message: "Member deleted successfully", error: null }));
 		} catch (err) {
 			logger.error("Couldn't delete member", err);
 			return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't delete member", error: err }));
