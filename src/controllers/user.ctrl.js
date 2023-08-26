@@ -4,12 +4,32 @@ import { PrismaClient } from "@prisma/client";
 import logger from "../config/logger.js";
 
 const prisma = new PrismaClient();
+import { encryptPassword } from '../libs/encryptPassword.js';
 
 class UserController {
 
     async create(req, res) {
 
-        return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "User created successfully", error: null }));
+        const { name, email, username, password } = req.body;
+
+        try {
+
+            const encryptedPassword = await encryptPassword(password);
+
+            const newUser = await prisma.User.create({
+                data: {
+                    name,
+                    email,
+                    username,
+                    password: encryptedPassword
+                }
+            });
+
+            return res.status(HttpStatusCode.OK).json(serviceResponse({ data: newUser, success: true, message: "User created successfully", error: null }));
+        } catch (err) {
+            logger.error("Couldn't create user", err);
+            return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't create user", error: err }));
+        }
     }
 
     async update(req, res) {
