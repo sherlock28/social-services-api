@@ -29,16 +29,15 @@ const validateCreate = [
 
 const validateUpdate = [
 
-    check('username')
-        .exists().withMessage("username is required")
-        .notEmpty().withMessage("username cannot be empty")
-        .isLength({ min: 4 }).withMessage("username must be at least 4 characters long"),
+    check('currentPassword')
+    .exists().withMessage("currentPassword is required")
+    .notEmpty().withMessage("currentPassword cannot be empty"),
 
-    check('password')
-        .exists().withMessage("password is required")
-        .notEmpty().withMessage("password cannot be empty")
-        .isLength({ min: 6 }).withMessage("invalid password. password must be at least 6 characters long")
-        .isAlphanumeric().withMessage("password must be alphanumeric"),
+    check('newPassword')
+        .exists().withMessage("currentPassword is required")
+        .notEmpty().withMessage("currentPassword cannot be empty")
+        .isLength({ min: 6 }).withMessage("invalid currentPassword. currentPassword must be at least 6 characters long")
+        .isAlphanumeric().withMessage("currentPassword must be alphanumeric"),
 
     (req, res, next) => validateResult(req, res, next)
 ];

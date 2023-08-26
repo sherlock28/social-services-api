@@ -5,7 +5,7 @@ import { validateCreate, validateUpdate, validateId } from '../../validators/use
 const router = Router();
 
 router.post('/', validateCreate, userCtrl.create);
-router.put('/:id', validateId, validateUpdate, userCtrl.update);
+router.put('/:id', validateId, validateUpdate, userCtrl.changePassword);
 router.delete('/:id', validateId, userCtrl.delete);
 router.get('/:id', validateId, userCtrl.getById);
 router.get('/', userCtrl.get);
