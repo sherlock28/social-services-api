@@ -46,8 +46,8 @@ class UserController {
 
             const user = await prisma.User.findFirst({ where: { id: +id } });
 
-			if (!user)
-				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "User not found", error: null }));
+            if (!user)
+                return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "User not found", error: null }));
 
             const deletedUser = await prisma.User.delete({ where: { id: +id } });
 
@@ -62,7 +62,25 @@ class UserController {
 
         const { id } = req.params;
 
-        return res.status(HttpStatusCode.OK).json(serviceResponse({ data: true, success: true, message: "Successfully obtained user", error: null }));
+        try {
+            const user = await prisma.User.findFirst({
+                select: {
+                    name: true,
+                    email: true,
+                    username: true,
+                }, 
+                where: { id: +id }
+            });
+
+            if (!user)
+                return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "User not found", error: null }));
+
+            return res.status(HttpStatusCode.OK).json(serviceResponse({ data: user, success: true, message: "Successfully obtained user", error: null }));
+
+        } catch (err) {
+            logger.error("Couldn't get user", err);
+            return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't get user", error: err }));
+        }
     }
 
     async get(req, res) {
