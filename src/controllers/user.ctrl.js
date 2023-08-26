@@ -41,9 +41,21 @@ class UserController {
 
     async delete(req, res) {
 
-        const { id } = req.params;
+        try {
+            const { id } = req.params;
 
-        return res.status(HttpStatusCode.OK).json(serviceResponse({ data: { id: id }, success: true, message: "User deleted successfully", error: null }));
+            const user = await prisma.User.findFirst({ where: { id: +id } });
+
+			if (!user)
+				return res.status(HttpStatusCode.NOT_FOUND).json(serviceResponse({ data: null, success: true, message: "User not found", error: null }));
+
+            const deletedUser = await prisma.User.delete({ where: { id: +id } });
+
+            return res.status(HttpStatusCode.OK).json(serviceResponse({ data: { id: deletedUser.id }, success: true, message: "User deleted successfully", error: null }));
+        } catch (err) {
+            logger.error("Couldn't delete user", err);
+            return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't delete user", error: err }));
+        }
     }
 
     async getById(req, res) {
