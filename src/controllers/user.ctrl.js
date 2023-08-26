@@ -68,7 +68,7 @@ class UserController {
                     name: true,
                     email: true,
                     username: true,
-                }, 
+                },
                 where: { id: +id }
             });
 
@@ -88,7 +88,23 @@ class UserController {
         const offset = req.query.offset ?? 0;
         const limit = req.query.limit ?? 20;
 
-        return res.status(HttpStatusCode.OK).json(serviceResponse({ data: [], success: true, message: "Successfully obtained users", error: null }));
+        try {
+            const users = await prisma.User.findMany({
+                select: { 
+                    name: true,
+                    email: true,
+                    username: true, 
+                },
+                orderBy: { created_at: "desc" },
+                skip: +offset,
+                take: +limit
+            });
+
+            return res.status(HttpStatusCode.OK).json(serviceResponse({ data: users, success: true, message: "Successfully obtained users", error: null }));
+        } catch (err) {
+            logger.error("Couldn't get users", err);
+            return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(serviceResponse({ data: null, success: false, message: "Couldn't get users", error: err }));
+        }
     }
 }
 
